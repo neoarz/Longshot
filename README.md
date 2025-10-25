@@ -35,7 +35,7 @@ cargo build --release
   "main_token": "YOUR_TOKEN_HERE", // Your main Discord token
   "snipe_on_main_token": true,
   "sub_tokens": ["YOUR_TOKEN_HERE", "YOUR_TOKEN_HERE"], // Your sub tokens
-  "webhook": "YOUR_WEBHOOK_HERE", // Your webhook URL
+  "webhook": "YOUR_WEBHOOK_HERE", // Your webhook URL for sending notifications
   "guild_blacklist": [1234567890, 1234567890] // Your guild blacklist
 }
 ```
