@@ -2,7 +2,7 @@ use crate::cache::Location;
 use crate::discord::Profile;
 use colored::*;
 use log::{Level, SetLoggerError};
-use std::io::{stdin, stdout, Read, Write};
+use std::io::{Read, Write, stdin, stdout};
 use std::time::Instant;
 
 #[macro_export]
@@ -171,7 +171,8 @@ pub fn set_up_logger() -> Result<(), SetLoggerError> {
 |    |   /  _ \ /    \  / ___\/  ___/  |  \ /  _ \   __\
 |    |__(  <_> )   |  \/ /_/  >___ \|   Y  (  <_> )  |  
 |_______ \____/|___|  /\___  /____  >___|  /\____/|__|  
-        \/          \//_____/     \/     \/             ".bright_blue()
+        \/          \//_____/     \/     \/             "
+            .bright_blue()
     );
 
     Ok(())

@@ -1,11 +1,11 @@
-use std::fmt::Formatter;
 use serenity::http::Http;
 use serenity::model::channel::Channel;
 use serenity::model::id::{ChannelId, GuildId};
-use std::collections::hash_map::Entry;
 use std::collections::HashMap;
+use std::collections::hash_map::Entry;
 use std::fmt;
 use std::fmt::Display;
+use std::fmt::Formatter;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 

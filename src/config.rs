@@ -63,21 +63,19 @@ impl ConfigReadError {
             ConfigReadError::NoSuchFile => match create_config() {
                 Ok(_) => {
                     log_error_and_exit!(
-                            "No previous config file found. Please change your configuration in the {} file just created!",
-                            "config.json".underline()
-                        );
+                        "No previous config file found. Please change your configuration in the {} file just created!",
+                        "config.json".underline()
+                    );
                 }
                 Err(_) => {
                     log_error_and_exit!(
-                            "No previous config file found. Please create a {} file with your configuration!",
-                            "config.json".underline()
-                        );
+                        "No previous config file found. Please create a {} file with your configuration!",
+                        "config.json".underline()
+                    );
                 }
             },
             ConfigReadError::MalformedConfig(reason) => {
-                pretty_error!(
-                    "Config file couldn't be read. Did you format it correctly?"
-                );
+                pretty_error!("Config file couldn't be read. Did you format it correctly?");
                 log_error_and_exit!("...{}.", reason);
             }
             ConfigReadError::FailedReading => {

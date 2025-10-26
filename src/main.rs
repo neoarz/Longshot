@@ -55,9 +55,7 @@ async fn main() {
     sniping_tokens.dedup();
 
     if sniping_tokens.is_empty() {
-        log_error_and_exit!(
-            "At least one token is required to start sniping..."
-        );
+        log_error_and_exit!("At least one token is required to start sniping...");
     }
 
     pretty_info!(
@@ -89,10 +87,7 @@ async fn main() {
                 }
             }));
         } else {
-            pretty_error!(
-                "Failed to create Discord client for token #{}.",
-                index,
-            );
+            pretty_error!("Failed to create Discord client for token #{}.", index,);
         }
     }
 

@@ -19,8 +19,8 @@ use serenity::model::user::CurrentUser;
 use serenity::prelude::{Context, EventHandler};
 use std::collections::HashSet;
 use std::fmt;
-use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use tokio::sync::Mutex;
 
 type HttpsClient = Client<HttpsConnector<HttpConnector>>;
@@ -75,7 +75,12 @@ impl Handler {
         }
     }
 
-    async fn make_request(&self, gift_code: String, _message: &Message, log: &mut LogBlock<'_>) -> SnipeResult {
+    async fn make_request(
+        &self,
+        gift_code: String,
+        _message: &Message,
+        log: &mut LogBlock<'_>,
+    ) -> SnipeResult {
         let request = Request::builder()
             .method(Method::POST)
             .uri(format!(
@@ -147,7 +152,7 @@ impl Handler {
             let client = self.info.client.clone();
             let profile = self.profile.get().unwrap().clone();
             let msg = message.clone();
-            
+
             tokio::spawn(async move {
                 let _ = webhook.send(&msg, &client, &profile, result).await;
             });
@@ -277,9 +282,7 @@ impl ProfileError {
     pub fn handle(&self) {
         match self {
             ProfileError::Unauthorized => {
-                log_error_and_exit!(
-                    "Main token verification failed. Check token validity."
-                );
+                log_error_and_exit!("Main token verification failed. Check token validity.");
             }
             ProfileError::RateLimited => {
                 log_error_and_exit!("Rate-limited. Try again later...");

@@ -55,41 +55,37 @@ struct WebhookPayload {
 impl WebhookPayload {
     fn new(message: &Message, finder: &Profile, result: SnipeResult) -> Self {
         let (title, description, color) = match result {
-                SnipeResult::Success => (
-                    "Yay! Claimed a Nitro!",
-                    "Nitro successfully claimed!",
-                    0x43B581,
-                ),
-                SnipeResult::FakeOrExpired => (
-                    "Code was fake or expired",
-                    "The code was invalid or already expired.",
-                    0xF04747, 
-                ),
-                SnipeResult::AlreadyRedeemed => (
-                    "Code was already redeemed",
-                    "Someone beat us to it!",
-                    0xF04747, 
-                ),
-                SnipeResult::RateLimited => (
-                    "Rate Limited",
-                    "Rate-limited by Discord.",
-                    0xF04747, 
-                ),
-                SnipeResult::DiscordError => (
-                    "Discord Error",
-                    "There was an error on Discord's side.",
-                    0xF04747, 
-                ),
-                SnipeResult::ConnectionError => (
-                    "Connection Error",
-                    "Failed to connect to Discord.",
-                    0xF04747,
-                ),
-                SnipeResult::Unknown => (
-                    "Unknown Response",
-                    "Received an unknown response from Discord.",
-                    0x000000,
-                ),
+            SnipeResult::Success => (
+                "Yay! Claimed a Nitro!",
+                "Nitro successfully claimed!",
+                0x43B581,
+            ),
+            SnipeResult::FakeOrExpired => (
+                "Code was fake or expired",
+                "The code was invalid or already expired.",
+                0xF04747,
+            ),
+            SnipeResult::AlreadyRedeemed => (
+                "Code was already redeemed",
+                "Someone beat us to it!",
+                0xF04747,
+            ),
+            SnipeResult::RateLimited => ("Rate Limited", "Rate-limited by Discord.", 0xF04747),
+            SnipeResult::DiscordError => (
+                "Discord Error",
+                "There was an error on Discord's side.",
+                0xF04747,
+            ),
+            SnipeResult::ConnectionError => (
+                "Connection Error",
+                "Failed to connect to Discord.",
+                0xF04747,
+            ),
+            SnipeResult::Unknown => (
+                "Unknown Response",
+                "Received an unknown response from Discord.",
+                0x000000,
+            ),
         };
 
         let embed = Embed::fake(|create| {
@@ -120,7 +116,7 @@ impl WebhookPayload {
                 )
                 .footer(|f| {
                     f.icon_url(WebhookPayload::get_longshot_avatar())
-                            .text(format!("Longshot {}", env!("CARGO_PKG_VERSION")))
+                        .text(format!("Longshot {}", env!("CARGO_PKG_VERSION")))
                 })
                 .timestamp(chrono::Local::now().to_rfc3339())
                 .colour(color)
@@ -132,17 +128,17 @@ impl WebhookPayload {
         }
     }
 
-        fn get_longshot_avatar() -> String {
-            "https://yes.nighty.works/raw/IH8LqF.png".to_string()
+    fn get_longshot_avatar() -> String {
+        "https://yes.nighty.works/raw/IH8LqF.png".to_string()
     }
 }
 
-    impl Default for WebhookPayload {
-        fn default() -> Self {
-            WebhookPayload {
-                username: "Longshot".to_string(),
-                avatar_url: WebhookPayload::get_longshot_avatar(),
-                embeds: Vec::new(),
-            }
+impl Default for WebhookPayload {
+    fn default() -> Self {
+        WebhookPayload {
+            username: "Longshot".to_string(),
+            avatar_url: WebhookPayload::get_longshot_avatar(),
+            embeds: Vec::new(),
         }
     }
+}
