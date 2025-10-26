@@ -39,7 +39,7 @@ impl Config {
     }
 
     pub fn webhook(&self) -> Option<String> {
-        if self.webhook != "" {
+        if !self.webhook.is_empty() {
             Some(self.webhook.clone())
         } else {
             None

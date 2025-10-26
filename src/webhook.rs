@@ -113,8 +113,8 @@ impl WebhookPayload {
                         message
                             .guild_id
                             .map_or_else(|| "@me".to_string(), |g| g.to_string()),
-                        message.channel_id.to_string(),
-                        message.id.to_string()
+                        message.channel_id,
+                        message.id
                     ),
                     false,
                 )

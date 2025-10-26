@@ -9,7 +9,7 @@ use std::time::Instant;
 macro_rules! log_error_and_exit {
     ($($arg:tt)+) => (
         error!("{}", format!($($arg)+));
-        crate::logging::pause_exit();
+        $crate::logging::pause_exit();
     )
 }
 
