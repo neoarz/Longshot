@@ -129,7 +129,7 @@ impl WebhookPayload {
     }
 
     fn get_longshot_avatar() -> String {
-        "https://yes.nighty.works/raw/IH8LqF.png".to_string()
+        "https://github.com/neoarz/Longshot/blob/main/assets/logo.png?raw=true".to_string()
     }
 }
 
