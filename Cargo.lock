@@ -18,7 +18,6 @@ dependencies = [
  "openssl",
  "regex",
  "serde",
- "serde_derive",
  "serde_json",
  "serenity",
  "socket2",
