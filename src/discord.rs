@@ -6,6 +6,8 @@ use crate::util::user_to_tag;
 use crate::webhook::Webhook;
 use crate::{log_error_and_exit, pretty_error, pretty_info, pretty_success, pretty_warn};
 use colored::*;
+use log::{error, info};
+use serde::Deserialize;
 use hyper::client::HttpConnector;
 use hyper::{Body, Client, Method, Request, StatusCode};
 use hyper_tls::HttpsConnector;

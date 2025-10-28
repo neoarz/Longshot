@@ -1,5 +1,7 @@
 use crate::{log_error_and_exit, pretty_error};
 use colored::*;
+use log::error;
+use serde::{Deserialize, Serialize};
 use serenity::model::id::GuildId;
 use std::fs::File;
 use std::io::{Read, Write};

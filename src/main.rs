@@ -4,30 +4,12 @@ mod discord;
 mod matcher;
 mod util;
 mod webhook;
-#[macro_use]
 mod logging;
-
-#[macro_use]
-extern crate lazy_static;
-#[macro_use]
-extern crate log;
-#[macro_use]
-extern crate serde_derive;
-extern crate chrono;
-extern crate colored;
-extern crate fern;
-extern crate futures;
-extern crate hyper;
-extern crate hyper_tls;
-extern crate regex;
-extern crate serde;
-extern crate serde_json;
-extern crate serenity;
-extern crate tokio;
 
 use colored::*;
 use hyper::{Body, Client};
 use hyper_tls::HttpsConnector;
+use log::{error, info};
 use serenity::Client as DiscordClient;
 use std::sync::Arc;
 

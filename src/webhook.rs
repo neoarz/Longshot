@@ -3,6 +3,7 @@ use crate::util::user_to_tag;
 use hyper::client::HttpConnector;
 use hyper::{Body, Client, Method, Request, StatusCode};
 use hyper_tls::HttpsConnector;
+use serde::Serialize;
 use serde_json::Value;
 use serenity::model::channel::{Embed, Message};
 
