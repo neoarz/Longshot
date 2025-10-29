@@ -1,13 +1,11 @@
+use dashmap::DashMap;
 use serenity::http::Http;
 use serenity::model::channel::Channel;
 use serenity::model::id::{ChannelId, GuildId};
-use std::collections::HashMap;
-use std::collections::hash_map::Entry;
 use std::fmt;
 use std::fmt::Display;
 use std::fmt::Formatter;
 use std::sync::Arc;
-use tokio::sync::Mutex;
 
 #[derive(Clone)]
 pub struct Location {
@@ -51,15 +49,15 @@ impl Location {
 }
 
 pub struct LocationCache {
-    channel_map: Mutex<HashMap<ChannelId, Location>>,
-    guild_map: Mutex<HashMap<GuildId, Arc<String>>>,
+    channel_map: DashMap<ChannelId, Location>,
+    guild_map: DashMap<GuildId, Arc<String>>,
 }
 
 impl LocationCache {
     pub fn new() -> Self {
         LocationCache {
-            channel_map: Mutex::new(HashMap::new()),
-            guild_map: Mutex::new(HashMap::new()),
+            channel_map: DashMap::new(),
+            guild_map: DashMap::new(),
         }
     }
 
@@ -92,17 +90,15 @@ impl LocationCache {
         guild_id: Option<GuildId>,
         http: &Http,
     ) -> Result<Location, ()> {
-        let mut channel_map = self.channel_map.lock().await;
+        if let Some(location) = self.channel_map.get(&channel_id) {
+            return Ok(location.clone());
+        }
 
-        match channel_map.entry(channel_id) {
-            Entry::Vacant(entry) => {
-                if let Ok(response) = self.make_location_request(channel_id, guild_id, http).await {
-                    Ok(entry.insert(response).clone())
-                } else {
-                    Err(())
-                }
-            }
-            Entry::Occupied(entry) => Ok(entry.get().clone()),
+        if let Ok(response) = self.make_location_request(channel_id, guild_id, http).await {
+            self.channel_map.insert(channel_id, response.clone());
+            Ok(response)
+        } else {
+            Err(())
         }
     }
 
@@ -111,17 +107,16 @@ impl LocationCache {
         guild_id: GuildId,
         http: &Http,
     ) -> Result<Arc<String>, ()> {
-        let mut guild_map = self.guild_map.lock().await;
+        if let Some(guild_name) = self.guild_map.get(&guild_id) {
+            return Ok(guild_name.clone());
+        }
 
-        match guild_map.entry(guild_id) {
-            Entry::Vacant(entry) => {
-                if let Ok(response) = http.get_guild(guild_id.0).await {
-                    Ok(entry.insert(Arc::new(response.name)).clone())
-                } else {
-                    Err(())
-                }
-            }
-            Entry::Occupied(entry) => Ok(entry.get().clone()),
+        if let Ok(response) = http.get_guild(guild_id.0).await {
+            let guild_name = Arc::new(response.name);
+            self.guild_map.insert(guild_id, guild_name.clone());
+            Ok(guild_name)
+        } else {
+            Err(())
         }
     }
 }
