@@ -6,12 +6,13 @@ use crate::util::user_to_tag;
 use crate::webhook::Webhook;
 use crate::{log_error_and_exit, pretty_error, pretty_info, pretty_success, pretty_warn};
 use colored::*;
-use log::{error, info};
-use serde::Deserialize;
+use dashmap::DashSet;
 use hyper::client::HttpConnector;
 use hyper::{Body, Client, Method, Request, StatusCode};
 use hyper_tls::HttpsConnector;
+use log::{error, info};
 use once_cell::sync::OnceCell;
+use serde::Deserialize;
 use serenity::async_trait;
 use serenity::http::{CacheHttp, GuildPagination, Http};
 use serenity::model::channel::Message;
@@ -22,7 +23,6 @@ use serenity::prelude::{Context, EventHandler};
 use std::fmt;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
-use dashmap::DashSet;
 
 type HttpsClient = Client<HttpsConnector<HttpConnector>>;
 

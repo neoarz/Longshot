@@ -1,7 +1,7 @@
+use dashmap::DashMap;
 use serenity::http::Http;
 use serenity::model::channel::Channel;
 use serenity::model::id::{ChannelId, GuildId};
-use dashmap::DashMap;
 use std::fmt;
 use std::fmt::Display;
 use std::fmt::Formatter;

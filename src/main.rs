@@ -1,10 +1,10 @@
 mod cache;
 mod config;
 mod discord;
+mod logging;
 mod matcher;
 mod util;
 mod webhook;
-mod logging;
 
 use colored::*;
 use hyper::{Body, Client};
