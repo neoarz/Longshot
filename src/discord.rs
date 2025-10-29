@@ -19,11 +19,10 @@ use serenity::model::gateway::Ready;
 use serenity::model::id::GuildId;
 use serenity::model::user::CurrentUser;
 use serenity::prelude::{Context, EventHandler};
-use std::collections::HashSet;
 use std::fmt;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
-use tokio::sync::Mutex;
+use dashmap::DashSet;
 
 type HttpsClient = Client<HttpsConnector<HttpConnector>>;
 
@@ -41,7 +40,7 @@ pub enum SnipeResult {
 pub struct HandlerInfo {
     client: HttpsClient,
     config: Config,
-    seen_codes: Mutex<HashSet<String>>,
+    seen_codes: DashSet<String>,
     token_amount: usize,
     connected: AtomicUsize,
     total_guilds: AtomicUsize,
@@ -52,7 +51,7 @@ impl HandlerInfo {
         HandlerInfo {
             client,
             config,
-            seen_codes: Mutex::new(HashSet::new()),
+            seen_codes: DashSet::new(),
             token_amount,
             connected: AtomicUsize::new(0),
             total_guilds: AtomicUsize::new(0),
@@ -204,27 +203,28 @@ impl EventHandler for Handler {
             return;
         }
 
-        if !self.info.config.is_guild_blacklisted(msg.guild_id) {
-            if let Some(gift_code) = get_gift_code(&msg) {
-                let mut seen_codes = self.info.seen_codes.lock().await;
-                if !seen_codes.contains(&gift_code) {
-                    seen_codes.insert(gift_code.clone());
+        if self.info.config.is_guild_blacklisted(msg.guild_id) {
+            return;
+        }
 
-                    let mut log = LogBlock::new(self.profile.get().unwrap());
-                    pretty_info!(log: log, "Claiming code: {}!", gift_code);
+        let Some(gift_code) = get_gift_code(&msg) else {
+            return;
+        };
 
-                    let result = self.make_request(gift_code, &msg, &mut log).await;
-                    log.freeze_time();
+        if self.info.seen_codes.insert(gift_code.clone()) {
+            let mut log = LogBlock::new(self.profile.get().unwrap());
+            pretty_info!(log: log, "Claiming code: {}!", gift_code);
 
-                    let location = self
-                        .location_cache
-                        .get_and_cache_location(msg.channel_id, msg.guild_id, ctx.http())
-                        .await;
-                    log.send(location, user_to_tag(&msg.author));
+            let result = self.make_request(gift_code, &msg, &mut log).await;
+            log.freeze_time();
 
-                    self.send_webhook(&msg, result).await;
-                }
-            }
+            let location = self
+                .location_cache
+                .get_and_cache_location(msg.channel_id, msg.guild_id, ctx.http())
+                .await;
+            log.send(location, user_to_tag(&msg.author));
+
+            self.send_webhook(&msg, result).await;
         }
     }
 
