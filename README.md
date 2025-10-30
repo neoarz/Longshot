@@ -15,20 +15,39 @@
 
 ## Installation:
 
+> [!WARNING]
+> **Windows Users**
+> 
+> Due to me using a mac, ~~windows is ass~~ I can't test the bot on Windows. If you are a Windows user, please test and lmk if it works. I can guarantee that the bot will work on Linux and macOS.
+
+### Installing Rust
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source "$HOME/.cargo/env"
+
+#Verify installation
+rustc --version
+cargo --version
+```
+### Build the bot
+
 ```bash
 # Clone the repository
 git clone https://github.com/neoarz/Longshot.git
 cd Longshot
 
-# Install dependencies
+# Build the program
 cargo build --release
 
-# Run the bot
+# Run the program
 ./target/release/longshot
 ```
 
 
 ## Configuration:
+
+#### After running the program for the first time, it will create a `config.json` file in the root directory.
 
 ```json
 {
@@ -39,3 +58,8 @@ cargo build --release
   "guild_blacklist": [1234567890, 1234567890] // Servers to ignore
 }
 ```
+
+
+## Support:
+
+If you need help, feel free to make an issue on the repository. Alternatively, you can DM [neoarz](https://discord.com/users/1015372540937502851) on Discord.
