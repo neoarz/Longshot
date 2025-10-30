@@ -18,7 +18,7 @@
 > [!WARNING]
 > **Windows Users**
 > 
-> Due to me using a mac, ~~windows is ass~~ I can't test the bot on Windows. If you are a Windows user, please test and lmk if it works. I can guarantee that the bot will work on Linux and macOS.
+> Due to me using a mac, ~~windows is ass~~ I don't want to test the bot on Windows. If you are a Windows user, please test and lmk if it works. I can guarantee that the bot will work on Linux and macOS. It also works on [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) from my testing.
 
 ### Installing Rust
 
